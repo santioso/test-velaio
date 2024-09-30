@@ -1,0 +1,52 @@
+<div class="task-form">
+  <div class="task-title">
+    Lista de tareas
+  </div>
+
+  <div class="filter-section">
+    <span class="label-filter">Filtros: </span>
+    <button
+      [ngClass]="{'active': currentFilter === 'all'}"
+      (click)="setFilter('all')">Todas
+    </button>
+    <button
+      [ngClass]="{'active': currentFilter === 'completed'}"
+      (click)="setFilter('completed')">Completadas
+    </button>
+    <button
+      [ngClass]="{'active': currentFilter === 'pending'}"
+      (click)="setFilter('pending')">Pendientes
+    </button>
+  </div>
+
+
+  <ul>
+    <li *ngFor="let task of filterTasks(); let i = index" class="task-item">
+      <div class="task-header">
+        <input aria-label="completar tarea" type="checkbox" [checked]="task.completed"
+          (change)="toggleCompletion(task)" class="custom-checkbox"/>
+        <span class="task-enum">{{ i + 1 }}. {{ task.title }} - {{ task.deadline | date: 'yyyy-MM-dd' }}</span>
+      </div>
+
+      <div *ngIf="task.persons && task.persons.length > 0" class="persons-section">
+        <h4>Personas asociadas:</h4>
+        <ul>
+          <li *ngFor="let person of task.persons" class="person-task">
+            {{ person.fullName }} ({{ person.age }})
+            <div *ngIf="person.skills && person.skills.length > 0">
+              <div class="skills-list">
+                <span *ngIf="person.skills && person.skills.length > 0">
+                  Habilidades: {{ getSkillsAsString(person) }}
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+
+  <div *ngIf="tasks.length === 0">
+    <p>No tasks available.</p>
+  </div>
+</div>

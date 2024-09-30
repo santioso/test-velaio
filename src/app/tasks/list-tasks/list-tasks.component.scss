@@ -1,0 +1,97 @@
+.task-form {
+  padding: 20px;
+}
+
+.task-title {
+  text-align: left;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 16px 0;
+  margin-bottom: 12px;
+}
+
+.task-enum {
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px 0;
+  margin-bottom: 12px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.filter-section {
+  display: flex;
+  align-items: center;
+}
+
+.filter-section button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: transparent; /* Color de fondo por defecto */
+  color: #007bff; /* Color de texto por defecto */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.filter-section button.active {
+  background-color: #007bff; /* Color de fondo cuando está activo */
+  color: white; /* Color de texto cuando está activo */
+  border-radius: 5px; /* Bordes redondeados opcionales */
+}
+
+.label-filter {
+  font-size: medium;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.filter-section button:hover {
+  background-color: #0056b3;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.task-item {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox {
+  width: 24px; /* Aumentar el tamaño del checkbox */
+  height: 24px; /* Aumentar el tamaño del checkbox */
+  margin-right: 10px; /* Espacio a la derecha */
+  margin-bottom: 20px;
+}
+
+.task-title {
+  margin-left: 10px;
+}
+
+.persons-section {
+  margin-top: 10px;
+}
+
+.person-task {
+  margin-bottom: 30px;
+}
+
+.skills-list {
+  margin-top: 5px;
+  padding-left: 20px;
+  list-style-type: circle;
+}
+

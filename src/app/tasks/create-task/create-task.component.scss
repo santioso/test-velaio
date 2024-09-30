@@ -1,0 +1,80 @@
+.task-form {
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.short-field {
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+}
+
+.label {
+  width: 170px;
+  display: flex;
+  align-items: center;
+}
+
+.input-group {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  margin-bottom: 15px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.task-title {
+  text-align: left;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 16px 0;
+  margin-bottom: 12px;
+}
+
+.personas-title {
+  text-align: left;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 16px 0;
+  margin-bottom: 12px;
+}
+
+.person-section {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+.skill-section {
+  padding-left: 15px;
+}
+
+.submit-button {
+  margin-top: 10px;
+  text-align: right;
+}
+
+button {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+  margin-top: 12px;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px; /* Espacio entre el input y el mensaje */
+  margin-left: 16px; /* Alineación con el input */
+}
+

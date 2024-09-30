@@ -1,0 +1,107 @@
+<div class="task-form">
+  <div class="task-title">
+    Crear una nueva tarea
+  </div>
+
+  <form [formGroup]="taskForm" (ngSubmit)="submitTask()">
+
+    <!-- Task Title -->
+    <div class="input-group">
+      <!-- Task Title -->
+      <mat-label class="label">Nombre de la tarea</mat-label>
+      <mat-form-field appearance="outline" class="short-field">
+        <input aria-label="title" matInput id="title" formControlName="title" />
+        <mat-error *ngIf="taskForm.get('title')?.invalid">El Título de la tarea es obligatorio</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Deadline -->
+    <div class="input-group">
+      <!-- Deadline -->
+      <mat-label class="label">Fecha límite</mat-label>
+      <mat-form-field appearance="outline" class="short-field">
+        <input aria-label="deadline" matInput [matDatepicker]="picker" formControlName="deadline" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="taskForm.get('deadline')?.invalid">La fecha límite es obligatoria</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="persons-group">
+      <!-- Persons List -->
+      <div formArrayName="persons">
+        <div>
+          <h3>Personas asociadas</h3>
+        </div>
+        <div *ngFor="let person of persons.controls; let i = index" [formGroupName]="i" class="person-section">
+          <div class="personrr-group">
+
+            <!-- Full Name -->
+            <div class="input-group">
+              <mat-label class="label">Nombre completo</mat-label>
+              <mat-form-field appearance="outline" class="short-field">
+                <input aria-label="fullname" matInput id="fullName" formControlName="fullName" />
+                <mat-error *ngIf="person.get('fullName')?.invalid">El nombre completo es obligatorio.</mat-error>
+              </mat-form-field>
+              <div *ngIf="taskForm.get('persons')?.errors?.['duplicateNames']" class="error-message">
+                El nombre no puede repetirse entre las personas asociadas a la misma tarea.
+              </div>
+            </div>
+
+            <!-- Age -->
+            <div class="input-group">
+              <mat-label class="label">Edad</mat-label>
+              <mat-form-field appearance="outline" class="short-field">
+                <input aria-label="number" matInput id="age" type="number" formControlName="age" />
+                <mat-error *ngIf="person.get('age')?.invalid">La edad debe ser mayor a 18 años.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Skills -->
+            <div>
+              <div formArrayName="skills">
+                <h4>Habilidades</h4>
+                <div *ngFor="let skill of getSkills(i).controls; let j = index" [formGroupName]="j"
+                  class="skill-section">
+                  <div class="input-group">
+                    <mat-label class="label">Habilidad</mat-label>
+                    <mat-form-field appearance="outline" class="short-field">
+                      <input aria-label="skill" matInput formControlName="name" />
+                      <mat-error *ngIf="skill.get('name')?.invalid">Skill is required</mat-error>
+                    </mat-form-field>
+                    <button type="button" mat-icon-button color="warn" (click)="removeSkill(i, j)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <button type="button" mat-raised-button color="primary" (click)="addSkill(i)">
+                  <mat-icon>add</mat-icon> Añadir Habilidad
+                </button>
+              </div>
+            </div>
+
+            <!-- Remove Person Button -->
+            <div class="remove-person">
+              <button type="button" mat-raised-button color="warn" (click)="removePerson(i)">
+                <mat-icon>delete</mat-icon> Eliminar Persona
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Person Button -->
+    <div class="add-person">
+      <button type="button" mat-raised-button color="primary" (click)="addPerson()">
+        <mat-icon>person_add</mat-icon> Añadir Persona
+      </button>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="submit-button">
+      <button mat-raised-button color="accent" type="submit">Guardar Tarea</button>
+    </div>
+  </form>
+
+</div>
