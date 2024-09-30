@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-task',
@@ -36,7 +37,7 @@ export class CreateTaskComponent {
       title: ['', [Validators.required, Validators.minLength(5)]],
       completed: [false],
       deadline: ['', Validators.required],
-      persons: this.fb.array([], this.uniquePersonsValidator),
+      persons: this.fb.array([], [this.uniquePersonsValidator, this.minPersonsValidator(1)]),
     });
   }
 
@@ -44,21 +45,15 @@ export class CreateTaskComponent {
     return this.taskForm.get('persons') as FormArray;
   }
 
-  uniquePersonsValidator(control: AbstractControl): ValidationErrors | null {
-    const personsArray = control as FormArray;
-    const names = personsArray.controls.map(person => person.get('fullName')?.value);
-    const duplicates = names.filter((name, index) => names.indexOf(name) !== index);
-    return duplicates.length > 0 ? { duplicateNames: true } : null; // Devuelve un error si hay duplicados
-  }
-
   addPerson() {
     const personForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(5)]],
       age: ['', [Validators.required, Validators.min(18)]],
-      skills: this.fb.array([]),
+      skills: this.fb.array([], [this.minSkillsValidator(1)]),
     });
     this.persons.push(personForm);
   }
+
 
   removePerson(index: number) {
     this.persons.removeAt(index);
@@ -71,7 +66,7 @@ export class CreateTaskComponent {
   addSkill(personIndex: number) {
     const skillsArray = this.getSkills(personIndex);
     skillsArray.push(this.fb.group({
-      name: ['', Validators.required] // Se asegura que el control 'name' esté creado
+      name: ['', Validators.required]
     }));
   }
 
@@ -91,10 +86,68 @@ export class CreateTaskComponent {
       // Convertir la fecha de deadline al formato ISO
       const taskData = {
         ...this.taskForm.value,
-        deadline: new Date(this.taskForm.value.deadline).toISOString(), // Asegúrate de que esté en el formato correcto
+        deadline: new Date(this.taskForm.value.deadline).toISOString(),
       };
       this.taskService.addTask(taskData);
       this.taskForm.reset();
+      Swal.fire({
+        title: 'Tarea guardada',
+        text: 'La tarea se guardó correctamente!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Ocurrió un error al guardar la tarea.' ,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     }
   }
+
+
+  // Validaciones personalizadas
+
+  /**
+   *
+   * @param control
+   * @returns
+   * Validador personalizado para verificar que no se dupliquen los nombres de las personas en la misma tarea
+   */
+  uniquePersonsValidator(control: AbstractControl): ValidationErrors | null {
+    const personsArray = control as FormArray;
+    const names = personsArray.controls.map(person => person.get('fullName')?.value);
+    const duplicates = names.filter((name, index) => names.indexOf(name) !== index);
+    return duplicates.length > 0 ? { duplicateNames: true } : null; // Devuelve un error si hay duplicados
+  }
+
+  /**
+   *
+   * @param min
+   * @returns
+   * Validador personalizado para verificar que haya al menos 'min' personas para cada tarea
+   */
+  minPersonsValidator(min: number) {
+    return (formArray: AbstractControl) => {
+      const array = formArray as FormArray;
+      return array.length >= min ? null : { minPersons: true };
+    };
+  }
+
+  /**
+   *
+   * @param min
+   * @returns
+   * Validador personalizado para verificar que haya al menos 'min' habilidades
+   */
+  minSkillsValidator(min: number) {
+    return (formArray: AbstractControl) => {
+      const array = formArray as FormArray;
+      return array.length >= min ? null : { minSkills: true };
+    };
+  }
+
+
+
 }

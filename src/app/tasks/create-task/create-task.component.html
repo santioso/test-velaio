@@ -43,9 +43,9 @@
                 <input aria-label="fullname" matInput id="fullName" formControlName="fullName" />
                 <mat-error *ngIf="person.get('fullName')?.invalid">El nombre completo es obligatorio.</mat-error>
               </mat-form-field>
-              <div *ngIf="taskForm.get('persons')?.errors?.['duplicateNames']" class="error-message">
-                El nombre no puede repetirse entre las personas asociadas a la misma tarea.
-              </div>
+            </div>
+            <div *ngIf="taskForm.get('persons')?.errors?.['duplicateNames']" class="error-message">
+              El nombre no puede repetirse entre las personas asociadas a la misma tarea.
             </div>
 
             <!-- Age -->
@@ -78,6 +78,9 @@
                   <mat-icon>add</mat-icon> Añadir Habilidad
                 </button>
               </div>
+              <div class="error-message" *ngIf="person.get('skills')?.hasError('minSkills')">
+                Cada persona debe tener al menos una habilidad.
+              </div>
             </div>
 
             <!-- Remove Person Button -->
@@ -96,11 +99,14 @@
       <button type="button" mat-raised-button color="primary" (click)="addPerson()">
         <mat-icon>person_add</mat-icon> Añadir Persona
       </button>
+      <div class="error-message" *ngIf="taskForm.get('persons')?.hasError('minPersons')">
+        Cada tarea debe tener al menos una persona.
+      </div>
     </div>
 
     <!-- Submit Button -->
     <div class="submit-button">
-      <button mat-raised-button color="accent" type="submit">Guardar Tarea</button>
+      <button mat-raised-button color="accent" type="submit" [disabled]="taskForm.invalid" >Guardar Tarea</button>
     </div>
   </form>
 
