@@ -1,65 +1,71 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Task } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
 import { MOCKTASKS } from '../mocks/task.mock';
 
+/**
+ * Servicio que gestiona las tareas de la aplicación.
+ * Utiliza un BehaviorSubject para almacenar y gestionar el estado de las tareas.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private tasks$: BehaviorSubject<Task[]>; // Inicializa con un arreglo vacío
+  // Subject que almacena las tareas actuales
+  private tasks$: BehaviorSubject<Task[]>;
 
-  apiUrl= 'https://jsonplaceholder.typicode.com/todos/'
+  constructor(private http: HttpClient) {
+    // Inicializa el BehaviorSubject con tareas de ejemplo
+    this.tasks$ = new BehaviorSubject<Task[]>(MOCKTASKS);
+  }
 
-constructor(
-  private http: HttpClient
-){
-  this.tasks$ = new BehaviorSubject<Task[]>(MOCKTASKS);
-}
-
-  // Obtiene el observable de tareas
+  /**
+   * Obtiene un observable de las tareas.
+   * @returns Un observable que emite la lista de tareas.
+   */
   get tasks(): Observable<Task[]> {
     return this.tasks$.asObservable();
   }
 
-  // Agrega una nueva tarea al arreglo local
+  /**
+   * Añade una nueva tarea a la lista.
+   * @param task - La tarea a añadir.
+   */
   addTask(task: Task) {
     const currentTasks = this.tasks$.getValue(); // Obtiene las tareas actuales
-    const id = this.getId(currentTasks); // Obtiene el siguiente id
-    const newTask = { ...task, id }; // Asignar el nuevo ID a la tarea
-    this.tasks$.next([...currentTasks, newTask]); // Actualiza el observable con la nueva tarea
-
-    console.log('this.tasks$', this.tasks$)
+    const id = this.getId(currentTasks); // Genera un nuevo ID para la tarea
+    const newTask = { ...task, id }; // Crea una nueva tarea con el ID generado
+    this.tasks$.next([...currentTasks, newTask]); // Actualiza el BehaviorSubject con la nueva lista de tareas
   }
 
-    // Obtiene las tareas.
-    getTasks(): Observable<Task[]> {
-      return this.tasks$.asObservable(); // Devuelve el observable directamente
-    }
+  /**
+   * Obtiene un observable de las tareas.
+   * @returns Un observable que emite la lista de tareas.
+   */
+  getTasks(): Observable<Task[]> {
+    return this.tasks$.asObservable(); // Retorna el observable de tareas
+  }
 
-  // Actualiza una tarea existente
+  /**
+   * Actualiza una tarea existente.
+   * @param updatedTask - La tarea con los cambios aplicados.
+   */
   updateTask(updatedTask: Task): void {
-    const currentTasks = this.tasks$.getValue();
+    const currentTasks = this.tasks$.getValue(); // Obtiene las tareas actuales
     const tasks = currentTasks.map(task =>
-      task.id === updatedTask.id ? updatedTask : task
+      task.id === updatedTask.id ? updatedTask : task // Reemplaza la tarea con los datos actualizados
     );
-    this.tasks$.next(tasks); // Actualiza el observable con la tarea modificada
+    this.tasks$.next(tasks); // Actualiza el BehaviorSubject con la lista de tareas actualizada
   }
+  
 
-  markTaskAsCompleted(id: number) {
-    const tasks = this.tasks$.getValue().map(t =>
-      t.id === id ? { ...t, completed: true } : t
-    );
-    this.tasks$.next(tasks);
-  }
-
-   // Filtra las tareas según su estado
-   filterTasks(completed: boolean): Task[] {
-    return this.tasks$.getValue().filter(task => task.completed === completed);
-  }
-
+  /**
+   * Genera un nuevo ID para una tarea.
+   * @param tasks - Lista actual de tareas.
+   * @returns Un ID único para la nueva tarea.
+   */
   private getId(tasks: Task[]): number {
-    return tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1;
+    return tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1; // Genera un ID único basado en las tareas existentes
   }
 }

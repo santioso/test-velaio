@@ -31,16 +31,16 @@ h2 {
   margin-left: 10px;
   padding: 10px 15px;
   border: none;
-  background-color: transparent; /* Color de fondo por defecto */
-  color: #007bff; /* Color de texto por defecto */
+  background-color: transparent;
+  color: #007bff;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .filter-section button.active {
-  background-color: #007bff; /* Color de fondo cuando está activo */
-  color: white; /* Color de texto cuando está activo */
-  border-radius: 5px; /* Bordes redondeados opcionales */
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
 }
 
 .label-filter {
@@ -71,9 +71,9 @@ ul {
 }
 
 .custom-checkbox {
-  width: 24px; /* Aumentar el tamaño del checkbox */
-  height: 24px; /* Aumentar el tamaño del checkbox */
-  margin-right: 10px; /* Espacio a la derecha */
+  width: 24px;
+  height: 24px;
+  margin-right: 10px; 
   margin-bottom: 20px;
 }
 

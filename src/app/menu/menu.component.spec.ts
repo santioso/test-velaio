@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SkillFormComponent } from './skill-form.component';
+import { MenuComponent } from './menu.component';
 
-describe('SkillFormComponent', () => {
-  let component: SkillFormComponent;
-  let fixture: ComponentFixture<SkillFormComponent>;
+describe('MenuComponent', () => {
+  let component: MenuComponent;
+  let fixture: ComponentFixture<MenuComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SkillFormComponent]
+      declarations: [MenuComponent]
     });
-    fixture = TestBed.createComponent(SkillFormComponent);
+    fixture = TestBed.createComponent(MenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

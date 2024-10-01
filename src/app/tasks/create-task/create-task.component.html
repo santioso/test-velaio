@@ -7,7 +7,6 @@
 
     <!-- Task Title -->
     <div class="input-group">
-      <!-- Task Title -->
       <mat-label class="label">Nombre de la tarea</mat-label>
       <mat-form-field appearance="outline" class="short-field">
         <input aria-label="title" matInput id="title" formControlName="title" />
@@ -17,7 +16,6 @@
 
     <!-- Deadline -->
     <div class="input-group">
-      <!-- Deadline -->
       <mat-label class="label">Fecha límite</mat-label>
       <mat-form-field appearance="outline" class="short-field">
         <input aria-label="deadline" matInput [matDatepicker]="picker" formControlName="deadline" />
@@ -41,7 +39,7 @@
               <mat-label class="label">Nombre completo</mat-label>
               <mat-form-field appearance="outline" class="short-field">
                 <input aria-label="fullname" matInput id="fullName" formControlName="fullName" />
-                <mat-error *ngIf="person.get('fullName')?.invalid">El nombre completo es obligatorio.</mat-error>
+                <mat-error *ngIf="person.get('fullName')?.invalid">El nombre completo es obligatorio y debe tener mínimo 5 caracteres.</mat-error>
               </mat-form-field>
             </div>
             <div *ngIf="taskForm.get('persons')?.errors?.['duplicateNames']" class="error-message">
@@ -74,6 +72,7 @@
                     </button>
                   </div>
                 </div>
+                <!-- Add Skill Button -->
                 <button type="button" mat-raised-button color="primary" (click)="addSkill(i)">
                   <mat-icon>add</mat-icon> Añadir Habilidad
                 </button>
