@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Person, Task } from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task.service';
 
-// Definición del tipo para el filtro de tareas
 export type TaskFilter = 'all' | 'completed' | 'pending';
 
 @Component({
@@ -19,9 +18,7 @@ export type TaskFilter = 'all' | 'completed' | 'pending';
  * Permite filtrar las tareas por estado (todas, completadas, pendientes).
  */
 export class ListTasksComponent implements OnInit {
-  // Array que almacena las tareas
   tasks: Task[] = [];
-  // Filtro actual para mostrar tareas (pendientes por defecto)
   currentFilter: TaskFilter = 'pending';
 
   /**
@@ -30,9 +27,6 @@ export class ListTasksComponent implements OnInit {
    */
   constructor(private taskService: TaskService) {}
 
-  /**
-   * Se llama a getTasks para cargar las tareas desde el servicio.
-   */
   ngOnInit(): void {
     this.getTasks();
   }
@@ -42,7 +36,7 @@ export class ListTasksComponent implements OnInit {
    */
   getTasks(): void {
     this.taskService.getTasks().subscribe((tasks) => {
-      this.tasks = tasks; // Almacena las tareas obtenidas
+      this.tasks = tasks;
     });
   }
 
@@ -51,8 +45,8 @@ export class ListTasksComponent implements OnInit {
    * @param task La tarea cuya completitud se va a alternar.
    */
   toggleCompletion(task: Task): void {
-    task.completed = !task.completed; // Alterna el estado de completado
-    this.taskService.updateTask(task); // Actualiza la tarea en el servicio
+    task.completed = !task.completed;
+    this.taskService.updateTask(task);
   }
 
   /**
@@ -61,13 +55,13 @@ export class ListTasksComponent implements OnInit {
    */
   filterTasks() {
     if (this.currentFilter === 'all') {
-      return this.tasks; // Retorna todas las tareas
+      return this.tasks;
     } else if (this.currentFilter === 'completed') {
-      return this.tasks.filter(task => task.completed); // Filtra tareas completadas
+      return this.tasks.filter(task => task.completed);
     } else if (this.currentFilter === 'pending') {
-      return this.tasks.filter(task => !task.completed); // Filtra tareas pendientes
+      return this.tasks.filter(task => !task.completed);
     }
-    return this.tasks; // Retorna todas las tareas por defecto
+    return this.tasks;
   }
 
   /**
@@ -75,15 +69,15 @@ export class ListTasksComponent implements OnInit {
    * @param filter El filtro que se va a aplicar.
    */
   setFilter(filter: TaskFilter) {
-    this.currentFilter = filter; // Actualiza el filtro actual
+    this.currentFilter = filter;
   }
 
   /**
    * Convierte las habilidades de una persona en una cadena separada por comas.
    * @param person La persona cuyas habilidades se van a convertir.
-   * @returns Una cadena con las habilidades de la persona.
+   * @returns Una cadena con las habilidades de la persona separadas por coma.
    */
   getSkillsAsString(person: Person): string {
-    return person.skills ? person.skills.map(skill => skill.name).join(', ') : ''; // Retorna las habilidades como una cadena
+    return person.skills ? person.skills.map(skill => skill.name).join(', ') : '';
   }
 }

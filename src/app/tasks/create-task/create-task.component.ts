@@ -34,7 +34,7 @@ import { Router } from '@angular/router';
   ],
 })
 export class CreateTaskComponent {
-  taskForm: FormGroup; // Formulario de la tarea
+  taskForm: FormGroup;
 
   /**
    * Constructor del componente.
@@ -48,11 +48,11 @@ export class CreateTaskComponent {
     private router: Router
   ) {
     this.taskForm = this.fb.group({
-      id: [''], // ID de la tarea
-      title: ['', [Validators.required, Validators.minLength(5)]], // Título de la tarea
-      completed: [false], // Estado de la tarea (completada o no)
-      deadline: ['', Validators.required], // Fecha límite de la tarea
-      persons: this.fb.array([], [this.uniquePersonsValidator, this.minPersonsValidator(1)]), // Lista de personas asociadas a la tarea
+      id: [''],
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      completed: [false],
+      deadline: ['', Validators.required],
+      persons: this.fb.array([], [this.uniquePersonsValidator, this.minPersonsValidator(1)]),
     });
   }
 
@@ -69,11 +69,11 @@ export class CreateTaskComponent {
    */
   addPerson() {
     const personForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.minLength(5)]], // Nombre completo de la persona
-      age: ['', [Validators.required, Validators.min(18)]], // Edad de la persona
-      skills: this.fb.array([], [this.minSkillsValidator(1)]), // Lista de habilidades de la persona
+      fullName: ['', [Validators.required, Validators.minLength(5)]],
+      age: ['', [Validators.required, Validators.min(18)]],
+      skills: this.fb.array([], [this.minSkillsValidator(1)]),
     });
-    this.persons.push(personForm); // Añade el formulario de persona al FormArray
+    this.persons.push(personForm);
   }
 
   /**
@@ -81,7 +81,7 @@ export class CreateTaskComponent {
    * @param index - Índice de la persona a eliminar
    */
   removePerson(index: number) {
-    this.persons.removeAt(index); // Remueve la persona del FormArray
+    this.persons.removeAt(index);
   }
 
   /**
@@ -100,7 +100,7 @@ export class CreateTaskComponent {
   addSkill(personIndex: number) {
     const skillsArray = this.getSkills(personIndex);
     skillsArray.push(this.fb.group({
-      name: ['', Validators.required] // Nombre de la habilidad
+      name: ['', Validators.required]
     }));
   }
 
@@ -110,7 +110,7 @@ export class CreateTaskComponent {
    * @param skillIndex - Índice de la habilidad a eliminar
    */
   removeSkill(personIndex: number, skillIndex: number) {
-    this.getSkills(personIndex).removeAt(skillIndex); // Remueve la habilidad del FormArray
+    this.getSkills(personIndex).removeAt(skillIndex);
   }
 
   /**
@@ -122,10 +122,9 @@ export class CreateTaskComponent {
     if (this.taskForm.valid) {
       const taskData = {
         ...this.taskForm.value,
-        deadline: new Date(this.taskForm.value.deadline).toISOString(), // Formatea la fecha de la tarea
+        deadline: new Date(this.taskForm.value.deadline).toISOString(),
       };
-      this.taskService.addTask(taskData); // Agrega la tarea al servicio
-    //  this.taskForm.reset(); // Reinicia el formulario
+      this.taskService.addTask(taskData);
       Swal.fire({
         title: 'Tarea guardada',
         text: 'La tarea se guardó correctamente!',
@@ -155,7 +154,7 @@ export class CreateTaskComponent {
     const personsArray = control as FormArray;
     const names = personsArray.controls.map(person => person.get('fullName')?.value);
     const duplicates = names.filter((name, index) => names.indexOf(name) !== index);
-    return duplicates.length > 0 ? { duplicateNames: true } : null; // Devuelve un error si hay duplicados
+    return duplicates.length > 0 ? { duplicateNames: true } : null;
   }
 
   /**
@@ -166,7 +165,7 @@ export class CreateTaskComponent {
   minPersonsValidator(min: number) {
     return (formArray: AbstractControl) => {
       const array = formArray as FormArray;
-      return array.length >= min ? null : { minPersons: true }; // Devuelve un error si no hay al menos una persona
+      return array.length >= min ? null : { minPersons: true };
     };
   }
 
@@ -178,7 +177,7 @@ export class CreateTaskComponent {
   minSkillsValidator(min: number) {
     return (formArray: AbstractControl) => {
       const array = formArray as FormArray;
-      return array.length >= min ? null : { minSkills: true }; // Devuelve un error si no hay al menos una habilidad
+      return array.length >= min ? null : { minSkills: true }; 
     };
   }
 }

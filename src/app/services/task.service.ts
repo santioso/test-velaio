@@ -12,11 +12,9 @@ import { MOCKTASKS } from '../mocks/task.mock';
   providedIn: 'root',
 })
 export class TaskService {
-  // Subject que almacena las tareas actuales
   private tasks$: BehaviorSubject<Task[]>;
 
   constructor(private http: HttpClient) {
-    // Inicializa el BehaviorSubject con tareas de ejemplo
     this.tasks$ = new BehaviorSubject<Task[]>(MOCKTASKS);
   }
 
@@ -33,10 +31,10 @@ export class TaskService {
    * @param task - La tarea a añadir.
    */
   addTask(task: Task) {
-    const currentTasks = this.tasks$.getValue(); // Obtiene las tareas actuales
-    const id = this.getId(currentTasks); // Genera un nuevo ID para la tarea
-    const newTask = { ...task, id }; // Crea una nueva tarea con el ID generado
-    this.tasks$.next([...currentTasks, newTask]); // Actualiza el BehaviorSubject con la nueva lista de tareas
+    const currentTasks = this.tasks$.getValue();
+    const id = this.getId(currentTasks);
+    const newTask = { ...task, id };
+    this.tasks$.next([...currentTasks, newTask]);
   }
 
   /**
@@ -44,7 +42,7 @@ export class TaskService {
    * @returns Un observable que emite la lista de tareas.
    */
   getTasks(): Observable<Task[]> {
-    return this.tasks$.asObservable(); // Retorna el observable de tareas
+    return this.tasks$.asObservable();
   }
 
   /**
@@ -52,13 +50,13 @@ export class TaskService {
    * @param updatedTask - La tarea con los cambios aplicados.
    */
   updateTask(updatedTask: Task): void {
-    const currentTasks = this.tasks$.getValue(); // Obtiene las tareas actuales
+    const currentTasks = this.tasks$.getValue();
     const tasks = currentTasks.map(task =>
-      task.id === updatedTask.id ? updatedTask : task // Reemplaza la tarea con los datos actualizados
+      task.id === updatedTask.id ? updatedTask : task
     );
-    this.tasks$.next(tasks); // Actualiza el BehaviorSubject con la lista de tareas actualizada
+    this.tasks$.next(tasks);
   }
-  
+
 
   /**
    * Genera un nuevo ID para una tarea.
@@ -66,6 +64,6 @@ export class TaskService {
    * @returns Un ID único para la nueva tarea.
    */
   private getId(tasks: Task[]): number {
-    return tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1; // Genera un ID único basado en las tareas existentes
+    return tasks.length > 0 ? Math.max(...tasks.map(task => task.id)) + 1 : 1; 
   }
 }
