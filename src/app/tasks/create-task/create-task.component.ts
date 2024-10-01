@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import {PersonFormComponent} from "../../person-form/person-form.component";
 
 /**
  * Componente para crear tareas.
@@ -30,7 +31,8 @@ import { Router } from '@angular/router';
     MatIconModule,
     HttpClientModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    PersonFormComponent
   ],
 })
 export class CreateTaskComponent {
@@ -124,7 +126,7 @@ export class CreateTaskComponent {
         ...this.taskForm.value,
         deadline: new Date(this.taskForm.value.deadline).toISOString(),
       };
-      this.taskService.addTask(taskData);
+      this.taskService.addTask(taskData); // Agrega la tarea al servicio
       Swal.fire({
         title: 'Tarea guardada',
         text: 'La tarea se guardó correctamente!',

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Person, Task } from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task.service';
 
+// Definición del tipo para el filtro de tareas
 export type TaskFilter = 'all' | 'completed' | 'pending';
 
 @Component({
@@ -37,7 +38,6 @@ export class ListTasksComponent implements OnInit {
   getTasks(): void {
     this.taskService.getTasks().subscribe((tasks) => {
       this.tasks = tasks;
-      console.log('tareas', this.tasks)
     });
   }
 
@@ -76,9 +76,9 @@ export class ListTasksComponent implements OnInit {
   /**
    * Convierte las habilidades de una persona en una cadena separada por comas.
    * @param person La persona cuyas habilidades se van a convertir.
-   * @returns Una cadena con las habilidades de la persona separadas por coma.
+   * @returns Una cadena con las habilidades de la persona.
    */
   getSkillsAsString(person: Person): string {
-    return person.skills ? person.skills.map(skill => skill.name).join(', ') : '';
+    return person.skills ? person.skills.map(skill => skill.name).join(', ') : ''; 
   }
 }

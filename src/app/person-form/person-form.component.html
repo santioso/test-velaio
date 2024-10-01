@@ -1,0 +1,57 @@
+<div class="person-section" [formGroup]="personForm">
+  <div class="personrr-group">
+    <!-- Full Name -->
+    <div class="input-group">
+      <mat-label class="label">Nombre completo</mat-label>
+      <mat-form-field appearance="outline" class="short-field">
+        <input aria-label="fullname" matInput id="fullName" formControlName="fullName" />
+        <mat-error *ngIf="personForm.get('fullName')?.invalid">El nombre completo es obligatorio y debe tener mínimo 5 caracteres.</mat-error>
+        <div *ngIf="personForm.parent?.errors?.['duplicateNames']" class="error-message">
+          El nombre no puede repetirse entre las personas asociadas a la misma tarea.
+        </div>
+      </mat-form-field>
+    </div>
+
+    <!-- Age -->
+    <div class="input-group">
+      <mat-label class="label">Edad</mat-label>
+      <mat-form-field appearance="outline" class="short-field">
+        <input aria-label="number" matInput id="age" type="number" formControlName="age" />
+        <mat-error *ngIf="personForm.get('age')?.invalid">La edad debe ser mayor a 18 años.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Skills -->
+    <div>
+      <div formArrayName="skills">
+        <h4>Habilidades</h4>
+        <div *ngFor="let skill of getSkills().controls; let j = index" [formGroupName]="j" class="skill-section">
+          <div class="input-group">
+            <mat-label class="label">Habilidad</mat-label>
+            <mat-form-field appearance="outline" class="short-field">
+              <input aria-label="skill" matInput formControlName="name" />
+              <mat-error *ngIf="skill.get('name')?.invalid">Skill is required</mat-error>
+            </mat-form-field>
+            <button type="button" mat-icon-button color="warn" (click)="removeSkill(j)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <!-- Add Skill Button -->
+        <button type="button" mat-raised-button color="primary" (click)="addSkill()">
+          <mat-icon>add</mat-icon> Añadir Habilidad
+        </button>
+      </div>
+      <div class="error-message" *ngIf="personForm.get('skills')?.hasError('minSkills')">
+        Cada persona debe tener al menos una habilidad.
+      </div>
+    </div>
+
+    <!-- Remove Person Button -->
+    <div class="remove-person">
+      <button type="button" mat-raised-button color="warn" (click)="removePerson()">
+        <mat-icon>delete</mat-icon> Eliminar Persona
+      </button>
+    </div>
+  </div>
+</div>
