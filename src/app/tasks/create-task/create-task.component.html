@@ -40,10 +40,10 @@
               <mat-form-field appearance="outline" class="short-field">
                 <input aria-label="fullname" matInput id="fullName" formControlName="fullName" />
                 <mat-error *ngIf="person.get('fullName')?.invalid">El nombre completo es obligatorio y debe tener mínimo 5 caracteres.</mat-error>
+                <div *ngIf="taskForm.get('persons')?.errors?.['duplicateNames']" class="error-message">
+                  El nombre no puede repetirse entre las personas asociadas a la misma tarea.
+                </div>
               </mat-form-field>
-            </div>
-            <div *ngIf="taskForm.get('persons')?.errors?.['duplicateNames']" class="error-message">
-              El nombre no puede repetirse entre las personas asociadas a la misma tarea.
             </div>
 
             <!-- Age -->
