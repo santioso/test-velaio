@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 /**
  * Componente para crear tareas.
@@ -41,7 +42,11 @@ export class CreateTaskComponent {
    * @param fb - FormBuilder para crear formularios reactivos
    * @param taskService - Servicio para gestionar tareas
    */
-  constructor(private fb: FormBuilder, private taskService: TaskService) {
+  constructor(
+    private fb: FormBuilder,
+    private taskService: TaskService,
+    private router: Router
+  ) {
     this.taskForm = this.fb.group({
       id: [''], // ID de la tarea
       title: ['', [Validators.required, Validators.minLength(5)]], // Título de la tarea
@@ -120,12 +125,14 @@ export class CreateTaskComponent {
         deadline: new Date(this.taskForm.value.deadline).toISOString(), // Formatea la fecha de la tarea
       };
       this.taskService.addTask(taskData); // Agrega la tarea al servicio
-      this.taskForm.reset(); // Reinicia el formulario
+    //  this.taskForm.reset(); // Reinicia el formulario
       Swal.fire({
         title: 'Tarea guardada',
         text: 'La tarea se guardó correctamente!',
         icon: 'success',
         confirmButtonText: 'OK'
+      }).then(() => {
+        this.router.navigate(['/list']);
       });
     } else {
       Swal.fire({
